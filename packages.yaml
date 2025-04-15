@@ -1,0 +1,117 @@
+# - Package definitions for Zsh environment setup
+
+# Common packages needed before OS specifics.
+# Assume 'zsh' and 'git' are handled separately or are prerequisites.
+common_tools:
+  - name: nvim
+  - name: gnupg # Base name, script adjusts based on OS if needed (e.g., gnupg2)
+  - name: fzf
+  - name: ripgrep
+
+# OS Specific definitions
+macos:
+  pkg_manager: brew # Homebrew required
+  core:
+    - name: curl
+    - name: wget
+  tools:
+    - name: eza
+    - name: fd
+    - name: bat
+    - name: lua # Lua needed for luarocks
+    - name: luarocks
+    - name: direnv
+      method: pkg # Default is pkg if method is omitted
+    - name: starship
+      method: pkg
+    - name: atuin
+      method: pkg
+  pyenv_deps:
+    - openssl
+    - readline
+    - sqlite3
+    - xz
+    - zlib
+    - tcl-tk
+
+ubuntu: # Also covers debian, pop
+  pkg_manager: apt
+  core:
+    - name: build-essential
+    - name: curl
+    - name: wget
+    - name: file
+    - name: pkg-config # Often needed for builds
+    - name: gnupg2 # Specific package name
+      command: gpg # Command provided
+  tools:
+    - name: batcat # Package name for bat
+      command: bat # Command to check/link
+    - name: exa # Package name for eza
+      command: eza
+    - name: fd-find # Package name for fd
+      command: fd
+    - name: lua5.3 # Specific version often needed, adjust if necessary
+    - name: luarocks
+    - name: direnv
+    - name: starship
+      method: script # Example: Use external installer
+      install_script: "curl -sS https://starship.rs/install.sh | sh -s -- --yes"
+    - name: atuin
+      method: script # Example: Use external installer
+      install_script: "curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh | sh"
+  pyenv_deps:
+    - make
+    - libssl-dev
+    - zlib1g-dev
+    - libbz2-dev
+    - libreadline-dev
+    - libsqlite3-dev
+    - llvm
+    - libncursesw5-dev
+    - xz-utils
+    - tk-dev
+    - libxml2-dev
+    - libxmlsec1-dev
+    - libffi-dev
+    - liblzma-dev
+
+rhel: # Also covers fedora, centos, rocky, alma
+  pkg_manager: dnf # Script handles yum fallback
+  core:
+    - name: curl
+    - name: wget
+    - name: file
+    - name: "@Development Tools" # Group name needs special handling
+    - name: gnupg2 # Specific package name
+      command: gpg
+  tools:
+    - name: bat
+    - name: exa
+    - name: fd-find
+      command: fd
+    - name: lua-devel
+    - name: luarocks
+    - name: direnv
+    - name: starship
+      method: script
+      install_script: "curl -sS https://starship.rs/install.sh | sh -s -- --yes"
+    - name: atuin
+      method: script
+      install_script: "curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh | sh"
+  pyenv_deps:
+    - make
+    - gcc
+    - zlib-devel
+    - bzip2
+    - bzip2-devel
+    - readline-devel
+    - sqlite
+    - sqlite-devel
+    - openssl-devel
+    - tk-devel
+    - libffi-devel
+    - xz-devel
+    - libuuid-devel
+    - gdbm-libs
+    - libnsl2-devel
